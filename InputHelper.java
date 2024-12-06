@@ -187,9 +187,13 @@ public class InputHelper {
     //takes inputs until it matches specified regex pattern
     public static String getRegEx(final String message, final String regExPattern){
         Scanner scan = new Scanner(System.in);
+        System.out.println(message);
         String input;
 
-        do {input = scan.nextLine();}while (!input.matches(regExPattern));
+        do{
+            input = scan.nextLine();
+            if(!input.matches(regExPattern)){System.out.println("Sorry, you've entered an invalid input. Please try again. | "+message);}
+        }while(!input.matches(regExPattern));
         return input;
     }
 
@@ -224,18 +228,18 @@ public class InputHelper {
         Scanner scan = new Scanner(System.in);
         String input;
         System.out.println(message);
-        final ArrayList<String> optionsList = (ArrayList<String>)Arrays.asList(options);
 
         do{
             input = scan.nextLine().toLowerCase(); //casts input to lower case to account for case differences
 
-            if(optionsList.contains(input)) {break;
-
-            }else{System.out.println("Sorry, you've entered an invalid input. Please try again. | VALID INPUTS: "+optionsList);}
+            for(String current:options){
+                if(current.toLowerCase().equals(input)) {
+                    return input;
+                }
+            }
+            System.out.println("Sorry, you've entered an invalid input. Please try again. | VALID INPUTS: "+options);
 
             scan.nextLine();
         }while(true);
-
-        return input;
     }
 }
