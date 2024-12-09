@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
         final ArrayList<String> list = new ArrayList<>(); //placeholder bruh i gotta think of something
+        list.addAll(Arrays.asList("Red", "Orange","Yellow","Green","Teal","Blue","Indigo","Purple","Black","White"));
 
         do {
             final String[] menu = {"A - Add an item to the list", "D – Delete an item from the list", "P – Print the list", "Q – Quit the program"};
