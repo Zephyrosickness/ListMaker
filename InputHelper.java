@@ -233,11 +233,11 @@ public class InputHelper {
             input = scan.nextLine().toLowerCase(); //casts input to lower case to account for case differences
 
             for(String current:options){
-                if(current.toLowerCase().equals(input)) {
+                if(current.equalsIgnoreCase(input)) {
                     return input;
                 }
             }
-            System.out.println("Sorry, you've entered an invalid input. Please try again. | VALID INPUTS: "+options);
+            System.out.println("Sorry, you've entered an invalid input. Please try again. | VALID INPUTS: "+ Arrays.toString(options));
 
             scan.nextLine();
         }while(true);
