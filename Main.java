@@ -31,6 +31,9 @@ public class Main {
                 case "O":
                     list = openFile(list);
                     break;
+                case "S":
+                    saveFile(list);
+                    break;
                 case "Q":
                     end();
                     break;
@@ -56,7 +59,6 @@ public class Main {
     }
 
     //does this really need to be an entire method
-    private static void printList(ArrayList<String> list) {
     private static void printList(ArrayList<String> list, boolean isConfirmation) {
         Scanner scan = new Scanner(System.in);
 
@@ -97,6 +99,19 @@ public class Main {
         }
         return list;
     }
+
+    private static void saveFile(ArrayList<String> list) throws IOException{
+        printList(list, false);
+
+        boolean keepChanges = InputHelper.getYN("\nIs this the list you want to save?");
+        if(keepChanges){
+            String fileName = InputHelper.getString("Enter a name for your list.");
+            if(!fileName.endsWith(".txt")){fileName+=".txt";}
+            IOHelper.writeFile(list, fileName); //i had to add a line to the IOhelper to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
+            isChanged = false;
+        }else{System.out.println("Changes not saved.");}
+    }
+
     private static void end(){
         boolean checkOne = true;
         boolean checkTwo = false;
