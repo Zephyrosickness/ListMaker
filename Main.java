@@ -43,6 +43,7 @@ public class Main {
         String item = InputHelper.getString("Enter what you'd like to add.");
         list.add(item);
         System.out.println("\nTask completed successfully.\n");
+        isChanged = true;
     }
 
     private static void deleteItem(ArrayList<String> list){
@@ -50,6 +51,7 @@ public class Main {
             int index = InputHelper.getRangedInt("Enter the ID number of the item you'd like to erase.", 0, list.size())-1; //index is decreased by 1 bc indexes start at zero but they're displayed starting at 1
             System.out.println("Deleted item "+list.get(index)+".\n");
             list.remove(index);
+            isChanged = true;
         }else{System.out.println("You have no items to remove.");}
     }
 
@@ -73,6 +75,8 @@ public class Main {
     private static void clearList(ArrayList<String> list){
         list.clear();
         System.out.println("\nTask completed successfully.\n");
+        isChanged = false;
+    }
 
     private static ArrayList<String> openFile(ArrayList<String> list) throws IOException{
         boolean keepGoing = InputHelper.getYN("This will clear your current list. Proceed?");
@@ -94,7 +98,16 @@ public class Main {
         return list;
     }
     private static void end(){
-        System.out.println("Goodbye!");
-        System.exit(0);
+        boolean checkOne = true;
+        boolean checkTwo = false;
+
+        if(isChanged){checkOne = InputHelper.getYN("You have unsaved changes. Proceed?");}
+
+        if(checkOne){checkTwo = InputHelper.getYN("Are you sure you want to quit?");}
+
+        if(checkTwo) {
+            System.out.println("Goodbye!");
+            System.exit(0);
+        }
     }
 }
