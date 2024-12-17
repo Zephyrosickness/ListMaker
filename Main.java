@@ -28,6 +28,9 @@ public class Main {
                 case "C":
                     clearList(list);
                     break;
+                case "O":
+                    list = openFile(list);
+                    break;
                 case "Q":
                     end();
                     break;
@@ -70,6 +73,25 @@ public class Main {
     private static void clearList(ArrayList<String> list){
         list.clear();
         System.out.println("\nTask completed successfully.\n");
+
+    private static ArrayList<String> openFile(ArrayList<String> list) throws IOException{
+        boolean keepGoing = InputHelper.getYN("This will clear your current list. Proceed?");
+        ArrayList<String> tempList = new ArrayList<>();
+
+        if(keepGoing){
+            System.out.println("[the window opens BEHIND the window! minimize the window!]");
+
+            IOHelper.openFile(tempList);
+            printList(tempList, false);
+
+            boolean keepChanges = InputHelper.getYN("\nIs this correct?");
+            if(keepChanges){
+                list.clear(); //clears so the new items from the txt can load
+                isChanged = false;
+                return tempList;
+            }else{System.out.println("Changes not saved.");}
+        }
+        return list;
     }
     private static void end(){
         System.out.println("Goodbye!");
