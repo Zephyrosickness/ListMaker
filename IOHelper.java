@@ -17,9 +17,6 @@ import static java.nio.file.StandardOpenOption.CREATE;
  */
 
 public class IOHelper {
-    //Creates a JFileChooser object that will open the JFileChooser Wizard GUI
-    //Allows user to search for files that they want read by the program
-    //Much easier for the user than typing in a file directory manually
     private static final JFileChooser chooser = new JFileChooser();
 
     /*
@@ -32,19 +29,14 @@ public class IOHelper {
     */
     public static String openFile(ArrayList <String> list) throws IOException{
         try {
-            //This variable will hold the users current working directory (program folder)
-            //"user.dir" is shorthand for current working directory (project folder)
             File workingDirectory = new File(System.getProperty("user.dir"));
 
             //This will make the JFileChooser GUI default to look in the workingDirectory first
             //User can still navigate out of this folder if desired
             chooser.setCurrentDirectory(workingDirectory);
 
-            //Checks to see if the user picks a file in the file chooser wizard
             if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                //Stores user selected file
                 File selectedFile = chooser.getSelectedFile();
-                //Holds the path to the selected file
                 Path file = selectedFile.toPath();
 
                 //InputStream is needed in order to create our Buffered Reader
@@ -55,30 +47,26 @@ public class IOHelper {
 
                 //Rec holds what the reader finds on the line
                 String rec = "";
-                //Moving through file, reading, and printing each line of the selected file
+
                 while (reader.ready()) {
                     rec = reader.readLine();
-                    //Adds each line from txt file to ArrayList for storage in Main
                     list.add(rec);
                 }
                 reader.close(); // must close the file to seal it and clear buffer
-                System.out.println("\n\nData file opened!"); //Success message
+                System.out.println("\n\nData file opened!");
                 return file.getFileName().toString();
-            } else {
-                //This else statement is hit when the user closes the JFileChooser Wizard without selecting file
+            }else{
                 System.out.println("File not selected. Please restart program.");
-                System.exit(0); //Shuts down program
+                System.exit(0);
             }
         }
         //This catch block is hit when the user file the user attempts to open a file that can not be found
         catch (FileNotFoundException e) {
             System.out.println("File not found!");
-            //Prints the error along with additional info related to the error
             e.printStackTrace();
         }
         //This catch block is hit for all other IO Exceptions
         catch (IOException e) {
-            //Prints the error along with additional info related to the error
             e.printStackTrace();
         }
         return null;
@@ -94,18 +82,11 @@ public class IOHelper {
     public static void writeFile(ArrayList<String> list, String name) throws IOException{
         //Sample data that is being added to an ArrayList named recs
         ArrayList<String> recs = list;
-
-        //This variable will hold the users current working directory (program folder)
-        //"user.dir" is shorthand for current working directory (project folder)
         File workingDirectory = new File(System.getProperty("user.dir"));
-        //Path is automatically set for user
-        //In this case, the file will be stored in the src folder and the name is already chosen
         Path file = Paths.get(workingDirectory+"\\"+name);
         System.out.println(file);
         file.toFile().createNewFile(); //this creates a new file if it doesnt exist. tsk tsk tsk herr george you didnt think of this
 
-        //The try block will attempt to write a new txt file
-        //If an error occurs in this block, the catch block will handle the IO Exception
         try {
             //OutputStream is needed in order to create our Buffered Writer
             //OutputStream allows bytes of data to be written to a file
@@ -122,13 +103,10 @@ public class IOHelper {
                 //need new line added before we write more data - ensures next bit of data is put on own line
                 writer.newLine();
             }
-            writer.close(); //closes file and clears buffer
+            writer.close();
             System.out.println("Data file written!");
         }
-        //This catch block is hit for a variety of IO Exceptions
-        catch (IOException e) {
-            //Prints the error along with additional info related to the error
-            e.printStackTrace();
-        }
+
+        catch (IOException e) {e.printStackTrace();}
     }
 }
