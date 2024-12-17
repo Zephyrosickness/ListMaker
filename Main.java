@@ -1,18 +1,19 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-//note to self this one was too easy i should make it write to a txt too!! -alexander
 public class Main {
-    public static void main(String[] args){
-        final ArrayList<String> list = new ArrayList<>(Arrays.asList("Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Indigo", "Purple", "Black", "White"));
+    private static boolean isChanged = false;
+    public static void main(String[] args) throws IOException {
+        ArrayList<String> list = new ArrayList<>(Arrays.asList("Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Indigo", "Purple", "Black", "White"));
 
         do {
-            final String[] menu = {"A - Add an item to the list", "D – Delete an item from the list", "P – Print the list", "C - Clear the list","Q – Quit the program"};
+            final String[] menu = {"\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to a .txt file","Q – Quit the program"};
             for (String option : menu) {System.out.println(option);}
 
             //for some reason the regex pattern did not work for me so i had to improvise
-            String menuOption = InputHelper.getStringInArray(new String[]{"A","D","P","C","D","Add","Print","Delete","Clear","Quit"}, "\nWhat would you like to do?").toUpperCase();
+            String menuOption = InputHelper.getStringInArray(new String[]{"A","D","V","C","O","S","D","Q","Add","View","Delete","Open","Save","Clear","Quit"}, "\nWhat would you like to do?").toUpperCase();
             menuOption = String.valueOf(menuOption.charAt(0));
             switch (menuOption){
                 case "A":
