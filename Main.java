@@ -22,8 +22,8 @@ public class Main {
                 case "D":
                     deleteItem(list);
                     break;
-                case "P":
-                    printList(list);
+                case "V":
+                    printList(list, true);
                     break;
                 case "C":
                     clearList(list);
@@ -52,6 +52,7 @@ public class Main {
 
     //does this really need to be an entire method
     private static void printList(ArrayList<String> list) {
+    private static void printList(ArrayList<String> list, boolean isConfirmation) {
         Scanner scan = new Scanner(System.in);
 
         if(!list.isEmpty()) {
@@ -59,11 +60,11 @@ public class Main {
                 System.out.println(list.indexOf(item) + 1 + "- " + item);
             }
 
-            System.out.println("\nWhen you're done viewing the list, Hit [ENTER].");
-            scan.nextLine();
-        }else{
-            System.out.println("You have nothing to print.\n");
-        }
+            if(isConfirmation){ //this is here because this is also called when opening a file, and it's a bit redundant to have the enter prompt bc it already asks for an input
+                System.out.println("\nWhen you're done viewing the list, Hit [ENTER].");
+                scan.nextLine();
+            }
+        }else{System.out.println("You have nothing to print.\n");}
     }
 
     private static void clearList(ArrayList<String> list){
