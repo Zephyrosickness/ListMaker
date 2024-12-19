@@ -1,12 +1,11 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-    private static boolean isChanged = false;
     public static void main(String[] args) throws IOException {
-        ArrayList<String> list = new ArrayList<>(Arrays.asList("Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Indigo", "Purple", "Black", "White"));
+        ArrayList<String> list = new ArrayList<>();
+        boolean isChanged = false;
 
         do {
             final String[] menu = {"\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to a .txt file","Q – Quit the program"};
@@ -18,9 +17,11 @@ public class Main {
             switch (menuOption){
                 case "A":
                     addItem(list);
+                    isChanged = true;
                     break;
                 case "D":
                     deleteItem(list);
+                    isChanged = true;
                     break;
                 case "V":
                     printList(list, true);
@@ -33,28 +34,27 @@ public class Main {
                     break;
                 case "S":
                     saveFile(list);
+                    isChanged = false;
                     break;
                 case "Q":
-                    end();
+                    end(isChanged);
                     break;
             }
 
-        }while(true); //this is whiletrue because the quit method will already force stop the system
+        }while(true); //this is whiletrue because the quit method will already force stop the system. this wont throw an exception intellij is a little liar
     }
 
     private static void addItem(ArrayList<String> list){
         String item = InputHelper.getString("Enter what you'd like to add.");
         list.add(item);
         System.out.println("\nTask completed successfully.\n");
-        isChanged = true;
     }
 
     private static void deleteItem(ArrayList<String> list){
         if(list.size()>1){
-            int index = InputHelper.getRangedInt("Enter the ID number of the item you'd like to erase.", 0, list.size())-1; //index is decreased by 1 bc indexes start at zero but they're displayed starting at 1
+            int index = InputHelper.getRangedInt("Enter the number of the item you'd like to erase.", 0, list.size())-1; //index is decreased by 1 bc indexes start at zero but they're displayed starting at 1
             System.out.println("Deleted item "+list.get(index)+".\n");
             list.remove(index);
-            isChanged = true;
         }else{System.out.println("You have no items to remove.");}
     }
 
@@ -77,7 +77,6 @@ public class Main {
     private static void clearList(ArrayList<String> list){
         list.clear();
         System.out.println("\nTask completed successfully.\n");
-        isChanged = false;
     }
 
     private static ArrayList<String> openFile(ArrayList<String> list) throws IOException{
@@ -93,7 +92,6 @@ public class Main {
             boolean keepChanges = InputHelper.getYN("\nIs this correct?");
             if(keepChanges){
                 list.clear(); //clears so the new items from the txt can load
-                isChanged = false;
                 return tempList;
             }else{System.out.println("Changes not saved.");}
         }
@@ -108,11 +106,10 @@ public class Main {
             String fileName = InputHelper.getString("Enter a name for your list.");
             if(!fileName.endsWith(".txt")){fileName+=".txt";}
             IOHelper.writeFile(list, fileName); //i had to add a line to the IOhelper to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
-            isChanged = false;
         }else{System.out.println("Changes not saved.");}
     }
 
-    private static void end(){
+    private static void end(boolean isChanged){
         boolean checkOne = true;
         boolean checkTwo = false;
 
