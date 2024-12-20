@@ -1,20 +1,28 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+    private static String filename;
     public static void main(String[] args) throws IOException {
         ArrayList<String> list = new ArrayList<>();
         boolean isChanged = false;
-
+        boolean optionAdded = false;
         do{
-            final String[] menu = {"\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to a .txt file","Q – Quit the program"};
-            for (String option : menu) {System.out.println(option);}
+            final ArrayList<String> menu = new ArrayList<>(Arrays.asList("\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to currently opened .txt file","","Q – Quit the program"));
+            if(filename!=null&&!optionAdded){
+                menu.add(5,"F - Save list to a different .txt file");
+                optionAdded=true;
+            }
+            for (String option : menu) {if(!(filename!=null&&option.equals("F - Save list to a different .txt file"))){System.out.println(option);}}
+            if(filename!=null){System.out.println("Currently reading from file "+filename);}
+
 
             //for some reason the regex pattern did not work for me so i had to improvise
             String menuOption = InputHelper.getStringInArray(new String[]{"A","D","V","C","O","S","D","Q","Add","View","Delete","Open","Save","Clear","Quit"}, "\nWhat would you like to do?").toUpperCase();
             menuOption = String.valueOf(menuOption.charAt(0));
-            switch (menuOption){
+            switch (menuOption) {
                 case "A":
                     addItem(list);
                     isChanged = true;
@@ -33,14 +41,18 @@ public class Main {
                     list = openFile(list);
                     break;
                 case "S":
-                    saveFile(list);
+                    saveFile(list, null);
                     isChanged = false;
                     break;
+                case "F":
+                    if (filename != null){
+                        saveFile(list, filename);
+                        break;
+                    }
                 case "Q":
                     end(isChanged);
                     break;
             }
-
         }while(true); //this is whiletrue because the quit method will already force stop the system. this wont throw an exception intellij is a little liar
     }
 
@@ -80,32 +92,33 @@ public class Main {
     }
 
     private static ArrayList<String> openFile(ArrayList<String> list) throws IOException{
-        boolean keepGoing = InputHelper.getYN("This will clear your current list. Proceed?");
+        boolean keepGoing = true;
+        if(!list.isEmpty()){keepGoing = InputHelper.getYN("This will clear your current list. Proceed?");}
         ArrayList<String> tempList = new ArrayList<>();
 
         if(keepGoing){
             System.out.println("[the window opens BEHIND the window! minimize the window!]");
-
-            DataReadingInterface.readFile(tempList);
+            String tempFilename = DataReadingInterface.readFile(tempList);
             printList(tempList, false);
 
             boolean keepChanges = InputHelper.getYN("\nIs this correct?");
             if(keepChanges){
                 list.clear(); //clears so the new items from the txt can load
+                filename = tempFilename;
                 return tempList;
             }else{System.out.println("Changes not saved.");}
         }
         return list;
     }
 
-    private static void saveFile(ArrayList<String> list) throws IOException{
+    private static void saveFile(ArrayList<String> list, String filename) throws IOException{
         printList(list, false);
 
         boolean keepChanges = InputHelper.getYN("\nIs this the list you want to save?");
         if(keepChanges){
-            String fileName = InputHelper.getString("Enter a name for your list.");
-            if(!fileName.endsWith(".txt")){fileName+=".txt";}
-            DataReadingInterface.writeFile(list, fileName); //i had to add a line to the DataReadingInterface to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
+            if(filename==null){filename = InputHelper.getString("Enter a name for your list.");}
+            if(!filename.endsWith(".txt")){filename+=".txt";}
+            DataReadingInterface.writeFile(list, filename); //i had to add a line to the DataReadingInterface to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
         }else{System.out.println("Changes not saved.");}
     }
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DataReadingInterface{
-    protected static void readFile(ArrayList<String> list) throws IOException{
+    protected static String readFile(ArrayList<String> list) throws IOException{
         list.clear();
         final JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
@@ -17,7 +17,10 @@ public class DataReadingInterface{
 
             while (scan.hasNextLine()){list.add(scan.nextLine());}
 
+            return dataFile.getName();
+
         }else{System.out.println("You didn't select a file. Try again.");}
+        return null;
     }
 
     protected static void writeFile(ArrayList<String> list, String name) throws IOException{
