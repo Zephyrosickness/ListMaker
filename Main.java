@@ -9,18 +9,20 @@ public class Main {
         ArrayList<String> list = new ArrayList<>();
         boolean isChanged = false;
         boolean optionAdded = false;
+        final ArrayList<String> menu = new ArrayList<>(Arrays.asList("\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to .txt file","Q – Quit the program"));
+
         do{
-            final ArrayList<String> menu = new ArrayList<>(Arrays.asList("\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to currently opened .txt file","","Q – Quit the program"));
             if(filename!=null&&!optionAdded){
-                menu.add(5,"F - Save list to a different .txt file");
+                menu.add(6,"F - Save list to a different .txt file");
+                menu.set(5, "S - Save list to currently opened .txt file");
                 optionAdded=true;
             }
-            for (String option : menu) {if(!(filename!=null&&option.equals("F - Save list to a different .txt file"))){System.out.println(option);}}
+            for (String option : menu){System.out.println(option);}
             if(filename!=null){System.out.println("Currently reading from file "+filename);}
 
 
             //for some reason the regex pattern did not work for me so i had to improvise
-            String menuOption = InputHelper.getStringInArray(new String[]{"A","D","V","C","O","S","D","Q","Add","View","Delete","Open","Save","Clear","Quit"}, "\nWhat would you like to do?").toUpperCase();
+            String menuOption = InputHelper.getString("\nWhat would you like to do?").toUpperCase();
             menuOption = String.valueOf(menuOption.charAt(0));
             switch (menuOption) {
                 case "A":
@@ -41,14 +43,12 @@ public class Main {
                     list = openFile(list);
                     break;
                 case "S":
-                    saveFile(list, null);
+                    saveFile(list, true);
                     isChanged = false;
                     break;
                 case "F":
-                    if (filename != null){
-                        saveFile(list, filename);
-                        break;
-                    }
+                    saveFile(list, false);
+                    break;
                 case "Q":
                     end(isChanged);
                     break;
@@ -64,7 +64,8 @@ public class Main {
 
     private static void deleteItem(ArrayList<String> list){
         if(list.size()>1){
-            int index = InputHelper.getRangedInt("Enter the number of the item you'd like to erase.", 0, list.size())-1; //index is decreased by 1 bc indexes start at zero but they're displayed starting at 1
+            int index = InputHelper.getRangedInt("Enter the number of the item you'd like to erase.", 1, list.size()); //index is decreased by 1 bc indexes start at zero but they're displayed starting at 1
+            index--; //subtracts by 1 because indexes start at 0 but the list is displayed starting at 1
             System.out.println("Deleted item "+list.get(index)+".\n");
             list.remove(index);
         }else{System.out.println("You have no items to remove.");}
@@ -111,12 +112,12 @@ public class Main {
         return list;
     }
 
-    private static void saveFile(ArrayList<String> list, String filename) throws IOException{
+    private static void saveFile(ArrayList<String> list, boolean sameFile) throws IOException{
         printList(list, false);
 
         boolean keepChanges = InputHelper.getYN("\nIs this the list you want to save?");
         if(keepChanges){
-            if(filename==null){filename = InputHelper.getString("Enter a name for your list.");}
+            if(!sameFile||filename==null){filename = InputHelper.getString("Enter a name for your list.");}
             if(!filename.endsWith(".txt")){filename+=".txt";}
             DataReadingInterface.writeFile(list, filename); //i had to add a line to the DataReadingInterface to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
         }else{System.out.println("Changes not saved.");}
