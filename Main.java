@@ -7,7 +7,7 @@ public class Main {
         ArrayList<String> list = new ArrayList<>();
         boolean isChanged = false;
 
-        do {
+        do{
             final String[] menu = {"\nA - Add an item to the list", "D – Delete an item from the list", "V – View the list", "C - Clear the list","O - Open a list from .txt file", "S - Save a list to a .txt file","Q – Quit the program"};
             for (String option : menu) {System.out.println(option);}
 
