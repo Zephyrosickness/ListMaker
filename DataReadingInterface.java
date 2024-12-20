@@ -28,6 +28,7 @@ public class DataReadingInterface{
 
         File writtenFile = new File(System.getProperty("user.dir")+"\\"+name);
         FileWriter myWriter = new FileWriter(writtenFile);
+        
         for(String line:list){myWriter.write(line+"\n");}
         myWriter.close();
     }
