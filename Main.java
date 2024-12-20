@@ -47,7 +47,7 @@ public class Main {
     private static void addItem(ArrayList<String> list){
         String item = InputHelper.getString("Enter what you'd like to add.");
         list.add(item);
-        System.out.println("\nTask completed successfully.\n");
+        System.out.println("\nTask completed successfully.");
     }
 
     private static void deleteItem(ArrayList<String> list){
@@ -86,7 +86,7 @@ public class Main {
         if(keepGoing){
             System.out.println("[the window opens BEHIND the window! minimize the window!]");
 
-            IOHelper.openFile(tempList);
+            DataReadingInterface.readFile(tempList);
             printList(tempList, false);
 
             boolean keepChanges = InputHelper.getYN("\nIs this correct?");
@@ -105,7 +105,7 @@ public class Main {
         if(keepChanges){
             String fileName = InputHelper.getString("Enter a name for your list.");
             if(!fileName.endsWith(".txt")){fileName+=".txt";}
-            IOHelper.writeFile(list, fileName); //i had to add a line to the IOhelper to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
+            DataReadingInterface.writeFile(list, fileName); //i had to add a line to the DataReadingInterface to create a new file if it doesnt exist... tsk tsk tsk herr george... im better at java because i already knew how to read/write files from when i made snake im sooo freaking good at coding (IM JOKING IM JOKING)
         }else{System.out.println("Changes not saved.");}
     }
 
