@@ -12,12 +12,12 @@ public class DataReadingInterface{
         chooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 
         if(chooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION){
-            final File dataFile = chooser.getSelectedFile();
+            final File file = chooser.getSelectedFile();
             final Scanner scan = new Scanner(dataFile);
 
             while (scan.hasNextLine()){list.add(scan.nextLine());}
 
-            return dataFile.getName();
+            return file.getName();
 
         }else{System.out.println("You didn't select a file. Try again.");}
         return null;
@@ -26,10 +26,10 @@ public class DataReadingInterface{
     protected static void writeFile(ArrayList<String> list, String name) throws IOException{
         if(!name.endsWith(".txt")){name+=".txt";}
 
-        File writtenFile = new File(System.getProperty("user.dir")+"\\"+name);
-        FileWriter myWriter = new FileWriter(writtenFile);
+        File file = new File(System.getProperty("user.dir")+"\\"+name);
+        FileWriter writer = new FileWriter(file);
         
-        for(String line:list){myWriter.write(line+"\n");}
-        myWriter.close();
+        for(String line:list){writer.write(line+"\n");}
+        writer.close();
     }
 }
