@@ -13,7 +13,7 @@ public class DataReadingInterface{
 
         if(chooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION){
             final File file = chooser.getSelectedFile();
-            final Scanner scan = new Scanner(dataFile);
+            final Scanner scan = new Scanner(file);
 
             while (scan.hasNextLine()){list.add(scan.nextLine());}
 
